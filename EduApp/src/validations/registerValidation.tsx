@@ -11,13 +11,17 @@ export const registerValidationSchema = Yup.object({
     .matches(/^[0-9]+$/, "Contact must be a number")
     .min(10, "Contact must be at least 10 digits")
     .max(10, "Contact must be at most 10 digits")
-    .matches(/^07[01245678][0-9]{7}$/, "Invalid contact number"),
+    .matches(/^07[01245678] [0-9]{7}$/, "Invalid contact number"),
   role: Yup.array()
     .of(Yup.string().oneOf(["student", "cellMember"]))
     .min(1, "Please select at least one role"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+    .required("Password is required")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/,
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+    ),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Password must match")
     .required("Confirm Password is Required"),

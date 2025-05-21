@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { toast } from "react-toastify";
 import { ErrorMessage, Field, Form, Formik } from "formik";
@@ -17,7 +17,6 @@ function Register() {
     firstName: string,
     lastName: string,
     contact: string,
-    confirmPassword: string,
     role: string[]
   ) => {
     const userCredential = await createUserWithEmailAndPassword(
@@ -38,8 +37,9 @@ function Register() {
       email,
       contact,
       role,
-      password,
-      confirmPassword,
+      uid: user.uid,
+      createdAt: Timestamp.now(),
+      
     });
   };
 
@@ -63,18 +63,19 @@ function Register() {
             values.firstName,
             values.lastName,
             values.contact,
-            values.confirmPassword,
             values.role
           );
-        } catch (error) {
-          toast.error("Registration failed!");
+        } catch (error: any) {
+          error.code === "auth/email-already-in-use"
+            ? toast.error("Email already in use!")
+            : toast.error("Registration failed!");
         }
         setSubmitting(false);
       }}
     >
       {() => (
         <Form>
-          <div className="min-h-screen grid md:grid-cols-2 grid-cols-1 bg-[#F2F6FA]">
+          <div className="min-h-screen grid md:grid-cols-2 grid-cols-1">
             <div className="flex items-center justify-center p-4 bg-[#D9F0F0] md:rounded-tr-4xl md:rounded-br-4xl rounded-br-4xl rounded-bl-4xl">
               <div className="flex flex-col items-center text-center">
                 <img
@@ -89,41 +90,41 @@ function Register() {
                 <div className="md:text-4xl text-xl font-semibold text-[#309898] md:mt-4">
                   Create New Account
                 </div>
-
-                <div className="md:mb-4 mb-2 md:mt-8 mt-2 relative ">
-                  <label
-                    htmlFor="firstName"
-                    className="text-[#6B7C93] text-sm md:text-lg block mb-1"
-                  >
-                    First Name
-                  </label>
-                  <Field
-                    name="firstName"
-                    type="text"
-                    placeholder="Enter your first name here"
-                    className="w-full rounded-md md:p-2 p-1 border border-[#D9E2EC] bg-white focus:ring-1 focus:ring-[#85c2c2] focus:outline-none text-[12px] md:text-[16px]"
-                  />
-                  <div className="absolute bottom-[-18px] right-0 text-red-600 font-semibold md:text-[12px] text-[10px]">
-                    <ErrorMessage name="firstName" />
+                <div className="grid md:grid-cols-2 grid-cols-1 md:gap-2 gap-0">
+                  <div className="md:mt-8 mt-2 relative ">
+                    <label
+                      htmlFor="firstName"
+                      className="text-[#6B7C93] text-sm md:text-lg block mb-1"
+                    >
+                      First Name
+                    </label>
+                    <Field
+                      name="firstName"
+                      type="text"
+                      placeholder="Enter your first name here"
+                      className="w-full rounded-md md:p-2 p-1 border border-[#D9E2EC] bg-white focus:ring-1 focus:ring-[#85c2c2] focus:outline-none text-[12px] md:text-[16px]"
+                    />
+                    <div className="absolute bottom-[-18px] right-0 text-red-600 font-semibold md:text-[12px] text-[10px]">
+                      <ErrorMessage name="firstName" />
+                    </div>
                   </div>
-                </div>
-
-                <div className="md:mb-2 mb-2 md:mt-4 mt-2 relative">
-                  <label
-                    htmlFor="lastName"
-                    className="text-[#6B7C93] text-sm md:text-lg block mb-1"
-                  >
-                    Last Name
-                  </label>
-                  <Field
-                    name="lastName"
-                    type="text"
-                    placeholder="Enter your last name here"
-                    className="w-full rounded-md md:p-2 p-1 border border-[#D9E2EC] bg-white focus:ring-1 focus:ring-[#85c2c2] focus:outline-none text-[12px] md:text-[16px]"
-                  />
-                  <div className="absolute bottom-[-18px] right-0 text-red-600 font-semibold md:text-[12px] text-[10px]">
-                    <ErrorMessage name="lastName" />
-                  </div>
+                  <div className="md:mt-8 mt-2 relative">
+                    <label
+                      htmlFor="lastName"
+                      className="text-[#6B7C93] text-sm md:text-lg block mb-1"
+                    >
+                      Last Name
+                    </label>
+                    <Field
+                      name="lastName"
+                      type="text"
+                      placeholder="Enter your last name here"
+                      className="w-full rounded-md md:p-2 p-1 border border-[#D9E2EC] bg-white focus:ring-1 focus:ring-[#85c2c2] focus:outline-none text-[12px] md:text-[16px]"
+                    />
+                    <div className="absolute bottom-[-18px] right-0 text-red-600 font-semibold md:text-[12px] text-[10px]">
+                      <ErrorMessage name="lastName" />
+                    </div>
+                  </div>{" "}
                 </div>
 
                 <div className="md:mb-4 mb-2 md:mt-4 mt-2 relative">

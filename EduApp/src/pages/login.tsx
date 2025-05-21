@@ -61,6 +61,7 @@ function Login() {
         const user = result.user;
         if (user) {
           toast.success("User logged in successfully");
+          console.log("User:", user);
           navigate("/signup");
         }
       })
@@ -99,7 +100,7 @@ function Login() {
       }}
     >
       {({ values }) => (
-        <Form className="min-h-screen grid md:grid-cols-2 grid-cols-1 bg-[#F2F6FA]">
+        <Form className="min-h-screen grid md:grid-cols-2 grid-cols-1">
           <div className="flex items-center justify-center p-4 bg-[#D9F0F0] md:rounded-tr-4xl md:rounded-br-4xl rounded-br-4xl rounded-bl-4xl">
             <div className="flex flex-col items-center text-center">
               <img
