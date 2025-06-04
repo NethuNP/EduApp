@@ -5,16 +5,13 @@ export const registerValidationSchema = Yup.object({
   lastName: Yup.string().required("Last Name is required"),
   email: Yup.string()
     .required("Email is required")
-    .email("Invalid email format"),
+    .email("Invalid email format")
+    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"),
   contact: Yup.string()
-   .required("Contact is required")
-    .matches(/^[0-9]+$/, "Contact must be a number")
-    .min(10, "Contact must be at least 10 digits")
-    .max(10, "Contact must be at most 10 digits")
-    .matches(/^07[01245678] [0-9]{7}$/, "Invalid contact number"),
-  role: Yup.array()
-    .of(Yup.string().oneOf(["student", "cellMember"]))
-    .min(1, "Please select at least one role"),
+    .required("Contact is required")
+    .matches(/^07[01245678]\d{7}$/, "Invalid contact number")
+    .length(10, "Contact must be exactly 10 digits"),
+  role: Yup.array().of(Yup.string().oneOf(["student", "eduAdmin"])),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
     .required("Password is required")

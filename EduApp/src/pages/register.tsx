@@ -17,7 +17,7 @@ function Register() {
     firstName: string,
     lastName: string,
     contact: string,
-    role: string[]
+    role: string []
   ) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -50,7 +50,7 @@ function Register() {
         lastName: "",
         email: "",
         contact: "",
-        role: [],
+        role: ["student"],
         password: "",
         confirmPassword: "",
       }}
@@ -150,7 +150,7 @@ function Register() {
                     htmlFor="contact"
                     className="text-[#6B7C93] text-sm md:text-lg block mb-1"
                   >
-                    Contact
+                    Contact Number
                   </label>
                   <Field
                     name="contact"
@@ -199,7 +199,7 @@ function Register() {
                   </div>
                 </div>
 
-                <div className="mb-4 md:mt-4 mt-2 relative">
+                {/* <div className="mb-4 md:mt-4 mt-2 relative">
                   <p className="text-[#6B7C93] text-sm md:text-lg mb-2">
                     I want to be
                   </p>
@@ -226,7 +226,7 @@ function Register() {
                   <div className="absolute bottom-[-18px] right-0 text-red-600  font-semibold md:text-[12px] text-[10px]">
                     <ErrorMessage name="role" />
                   </div>
-                </div>
+                </div> */}
 
                 <button
                   type="submit"

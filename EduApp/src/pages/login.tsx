@@ -33,16 +33,13 @@ function Login() {
 
         const roles: string[] = Array.isArray(role) ? role : [role];
 
-        if (roles.includes("superadmin")) {
-          navigate("/super");
+        if (roles.includes("superAdmin")) {
+          navigate("/superadmin/dashboard");
         } else if (roles.includes("eduAdmin")) {
-          navigate("/edu");
+          navigate("/eduAdmin/eduDashboard");
         } else if (roles.includes("student")) {
-          navigate("/stu");
-        } else if (roles.includes("cellAdmin")) {
-          navigate("/");
-        } else if (roles.includes("cellMember")) {
-          navigate("/");
+          navigate("/student/stuDashboard");
+        
         } else {
           navigate("/");
         }
