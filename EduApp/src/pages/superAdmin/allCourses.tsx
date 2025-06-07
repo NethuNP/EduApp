@@ -22,11 +22,19 @@ function AllCourses() {
             All Courses
           </h2>
           <div className="bg-teal-50 text-gray-500 md:py-2 py-1 justify-between rounded-xl md:flex hidden p-4">
-          <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items-start">Course Name</div>
-          <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">Admin Name</div>
-          <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">Category</div>
-          <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">Start Date</div>
-        </div>
+            <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items-start">
+              Course Name
+            </div>
+            <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">
+              Admin Name
+            </div>
+            <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">
+              Category
+            </div>
+            <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">
+              Start Date
+            </div>
+          </div>
           <div className="space-y-4 text-[#6B7C93]">
             {courses.map((course, index) => (
               <div

@@ -44,7 +44,7 @@ const StudentLayout: React.FC = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-4">
-          <Outlet />
+          <Outlet context={{ selectedCategory: selected }} />
         </div>
       </main>
     </div>

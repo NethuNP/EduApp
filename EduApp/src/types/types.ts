@@ -13,6 +13,7 @@ export interface SidebarItem {
 }
 
 export interface User {
+  
   uid: string;
   firstName: string;
   lastName: string;
@@ -35,7 +36,7 @@ export interface Course {
 }
 
 export interface Lesson {
-  lessonId:string
+  lessonId: string;
   lessonTitle: string;
   lessonCategory: string;
   lessonMaterials: string;
@@ -47,8 +48,15 @@ export interface Lesson {
 }
 
 export interface Assignment {
-   assignmentTitle: string,
-   assignmentStartDate: string,
-   assignmentEndDate:string,
-   metirials: string,
+  assignmentId: string;
+  assignmentTitle: string;
+  assignmentStartDate: string;
+  assignmentEndDate: string;
+  assignmentMaterials: string;
+  lessonId: string;
+  assignmentDescription: string;
+}
+
+export interface contextType {
+  selectedCategory: string;
 }

@@ -1,12 +1,12 @@
 import type { SidebarItem } from '../types/types';
-import dashboard from "../assets/icons/dashboard.png"
-import courses from "../assets/icons/courses.png"
+import { FileText,  LayoutDashboard, UserCog } from 'lucide-react';
 
 
 
 export const eduAdminsidebar: SidebarItem[] = [
-      {label: 'Dashboard', path:'/eduAdmin/eduDashboard', icon:<img src={dashboard} alt="Dashboard" className="md:w-6 md:h-6 w-4 h-4 rounded-full" />},
-      {label: 'My Courses', path:'/eduAdmin/myCourses', icon:<img src={courses} alt="Courses" className="md:w-6 md:h-6 w-4 h-4 rounded-full" />},
+      {label: 'Dashboard', path:'/eduAdmin/eduDashboard', icon:<LayoutDashboard />},
+      {label: 'My Courses', path:'/eduAdmin/myCourses', icon:<FileText />},
+      {label : 'My Account', path: '/eduAdmin/myAccount', icon: <UserCog />},
    
 
 

@@ -1,4 +1,12 @@
-import { addDoc, collection, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  getFirestore,
+  onSnapshot,
+} from "firebase/firestore";
 import type { User } from "../types/types";
 import app from "./firebase";
 import { getAuth, signOut } from "firebase/auth";
@@ -44,37 +52,56 @@ export const getAllUsers = (setUsers: any) => {
   return unsubscribe;
 };
 
+
+
+
+export const getCurrentUserDetails = async (userId: string ) => {
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+
+  if (!currentUser) return;
+
+  const usersRef = collection(firestore, "users");
+  const snapshot = await getDocs(usersRef);
+  const matchedUser = snapshot.docs
+    .map((doc) => ({ uid: doc.id, ...doc.data() }))
+    .find((user: any) => user.uid === userId);
+
+  return matchedUser;
+};
+
+
 //get all students from the collection
 
-export const getAllStudents = (setStudents:any) => {
+export const getAllStudents = (setStudents: any) => {
   const studentsRef = collection(firestore, "users");
   const allStudents = onSnapshot(studentsRef, (snapshot) => {
     const studentsData = snapshot.docs
       .map((doc) => ({
         id: doc.id,
-        ...doc.data() as User,
+        ...(doc.data() as User),
       }))
       .filter((user: User) => user.role?.includes("student"));
     setStudents(studentsData);
   });
 
   return allStudents;
-}
+};
 
 //get student count
 
 export const getStudentCount = async () => {
   const studentsRef = collection(firestore, "users");
-  const snapshot =await getDocs(studentsRef);
+  const snapshot = await getDocs(studentsRef);
   const studentsData = snapshot.docs
     .map((doc) => ({
       id: doc.id,
-      ...doc.data() as User,
+      ...(doc.data() as User),
     }))
     .filter((user: User) => user.role?.includes("student"));
-    
-  return studentsData.length
-}
+
+  return studentsData.length;
+};
 
 //get all admins from the collection
 
@@ -84,14 +111,25 @@ export const getAllAdmins = (setAdmins: any) => {
     const adminsData = snapshot.docs
       .map((doc) => ({
         id: doc.id,
-        ...doc.data() as User,
+        ...(doc.data() as User),
       }))
       .filter((user: User) => user.role?.includes("eduAdmin"));
     setAdmins(adminsData);
   });
 
   return allAdmins;
-}
+};
+
+//delete admin by id
+export const deleteAdmin = async (id: string) => {
+  try {
+    const adminDoc = doc(firestore, "users", id);
+    await deleteDoc(adminDoc);
+    console.log("Admin deleted successfully");
+  } catch (error) {
+    console.error("Error deleting admin:", error);
+  }
+};
 
 //get admin count
 export const getAdminCount = async () => {
@@ -100,14 +138,9 @@ export const getAdminCount = async () => {
   const adminsData = snapshot.docs
     .map((doc) => ({
       id: doc.id,
-      ...doc.data() as User,
+      ...(doc.data() as User),
     }))
     .filter((user: User) => user.role?.includes("eduAdmin"));
-    
+
   return adminsData.length;
-}
-  
-
-
-
-
+};

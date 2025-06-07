@@ -4,6 +4,7 @@ import { getCourseById } from "../../lib/courseController";
 import { getLessonByCourseId } from "../../lib/lessonController";
 import type { Course, Lesson } from "../../types/types";
 import { ChevronRight } from "lucide-react";
+import Pagination from "../../components/pagination";
 
 function ViewCourse() {
   const navigate = useNavigate();
@@ -11,6 +12,15 @@ function ViewCourse() {
   const [course, setCourse] = useState<Course>();
   const [lessons, setLessons] = useState<Lesson[]>([]);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const lessonsPerPage = 4;
+
+  const indexOfLastLesson = currentPage * lessonsPerPage;
+  const indexOfFirstLesson = indexOfLastLesson - lessonsPerPage;
+  const currentLessons = lessons.slice(indexOfFirstLesson, indexOfLastLesson);
+
+  console.log(id);
   useEffect(() => {
     const fetchCourse = async () => {
       if (id) {
@@ -28,72 +38,102 @@ function ViewCourse() {
   }, [id]);
 
   if (!course) {
-    return <div className="text-center mt-4">Loading course...</div>;
+    return (
+      <div className="text-center mt-8 text-gray-500 text-lg">
+        Loading course...
+      </div>
+    );
   }
 
   return (
-    <div className="w-full bg-white rounded-lg md:p-10 p-4 space-y-auto">
-      <div className="flex items-center justify-center md:text-3xl text-lg text-[#309898] font-semibold">
+    <div className="w-full bg-white rounded-2xl p-4 md:p-6 shadow-sm">
+      {/* Course Title */}
+      <div className="text-center text-[#309898] font-bold text-xl md:text-3xl mb-">
         {course.title}
       </div>
-      <div className="flex items-end justify-end md:gap-6 gap-10">
+
+      {/* Add Lesson Button */}
+      <div className="flex justify-end mb-4">
         <button
-          className="bg-[#309898] hover:bg-[#00796B] text-white md:text-lg text-sm md:px-4 md:py-2 px-2 py-1 rounded-lg font-semibold cursor-pointer"
+          className="bg-[#309898] hover:bg-[#00796B] text-white font-semibold text-sm md:text-base px-4 py-2 rounded-lg shadow-md hidden md:block"
           onClick={() => navigate(`/eduAdmin/myCourses/${id}/lessons`)}
         >
-          Lessons +
-        </button>
-        <button
-          className="bg-[#309898] hover:bg-[#00796B] text-white md:text-lg text-sm md:px-4 md:py-2 px-2 py-1 rounded-lg font-semibold cursor-pointer"
-          onClick={() => navigate(`/eduAdmin/myCourses/${id}/assignments`)}
-        >
-          Assignments +
+          + Add Lesson
         </button>
       </div>
-      <div className="grid md:grid-cols-2 grid-cols-1 md:gap-6 gap-4 md:mt-10 mt-4">
+
+      {/* Course Info Section */}
+      <div className="grid md:grid-cols-2 gap-8">
         {/* Cover Image */}
         <div className="flex items-center justify-center">
           <img
             src={course.coverImage}
             alt="Course Cover"
-            className="md:w-[400px] md:h-[300px] rounded-lg object-cover "
+            className="rounded-xl w-full max-w-[500px] h-auto object-cover shadow"
           />
         </div>
 
-        {/* Course Description */}
-        <div className="flex flex-col justify-center gap-4">
-          <p className="text-gray-700 font-normal md:text-lg text-sm text-justify">
+        {/* Description & Dates */}
+        <div className="flex flex-col justify-between gap-6">
+          <p className="text-gray-700 text-sm md:text-base leading-relaxed text-justify">
             {course.description}
           </p>
 
-          {/* Start and End Date*/}
-          <div className="flex justify-between text-sm text-gray-500 md:mt-10">
-            <span>Start Date: {course.startDate}</span>
-            <span>End Date: {course.endDate}</span>
+          <div className="flex justify-between text-xs md:text-sm text-gray-500">
+            <span>
+              <strong>Start:</strong> {course.startDate}
+            </span>
+            <span>
+              <strong>End:</strong> {course.endDate}
+            </span>
           </div>
         </div>
       </div>
-      {/* Lessons */}
-      <div className=" md:mt-10 mt-6">
-        <div className=" text-gray-400 font-semibold grid md:grid-cols-2 grid-cols-1 md:gap-6 gap-4  ">
-          {lessons.map((lesson, index) => (
+
+      {/* Lessons Header */}
+      <div className="md:mt-6 flex items-center justify-between">
+        <h2 className="text-[#309898] text-lg md:text-2xl font-semibold">
+          Lessons
+        </h2>
+        <button
+          className="bg-[#309898] hover:bg-[#00796B] text-white font-semibold text-sm px-3 py-1 rounded-lg md:hidden block"
+          onClick={() => navigate(`/eduAdmin/myCourses/${id}/lessons`)}
+        >
+          + Add Lesson
+        </button>
+      </div>
+
+      {/* Lessons List */}
+      <div className="mt-4 grid md:grid-cols-2 gap-4">
+        {lessons.length === 0 ? (
+          <div className="text-center col-span-2 text-gray-400 font-medium">
+            No lessons added yet.
+          </div>
+        ) : (
+          currentLessons.map((lesson, index) => (
             <div
               key={index}
-              className="flex flex-col justify-between gap-4 bg-[#D9F0F0] shadow-md rounded-lg md:p-6 p-4 md:mt-6 mt-4 cursor-pointer  "
               onClick={() =>
-                navigate(`/eduAdmin/myCourses/${id}/${lesson.lessonId}`)
+                navigate(`/eduAdmin/myCourses/${id}/lessons/${lesson.lessonId}`)
               }
+              className="bg-teal-100 hover:bg-teal-200  transition-colors duration-300 cursor-pointer rounded-xl p-4 md:p-6 shadow-sm flex items-center justify-between"
             >
-              <div className="flex items-center justify-between text-gray-700">
-                <div>{lesson.lessonTitle}</div>
-                <div>
-                  <ChevronRight />
-                </div>
-              </div>
+              <span className="text-gray-700 font-medium">
+                {lesson.lessonTitle}
+              </span>
+              <ChevronRight className="text-[#309898]" />
             </div>
-          ))}
-        </div>
+          ))
+        )}
       </div>
+        {lessons.length > lessonsPerPage && (
+        <Pagination
+          currentPage={currentPage}
+          totalItems={lessons.length}
+          itemsPerPage={lessonsPerPage}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </div>
   );
 }

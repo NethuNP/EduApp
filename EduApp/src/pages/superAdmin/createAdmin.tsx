@@ -6,6 +6,7 @@ import { db } from "../../lib/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { secondaryAuth } from "../../lib/firebase";
+import { CreateButton } from "../../components/button";
 
 function CreateAdmin() {
   const navigate = useNavigate();
@@ -63,7 +64,10 @@ function CreateAdmin() {
           );
           toast.success("Admin created successfully!");
           navigate("/superadmin/allAdmins");
-        } catch (err) {
+        } catch (err: any) {
+          err.code === "auth/email-already-in-use"
+            ? toast.error("Email already in use!")
+            : toast.error("Registration failed!");
           console.error("Error submitting form", err);
         } finally {
           setSubmitting(false);
@@ -201,12 +205,7 @@ function CreateAdmin() {
 
           {/* Submit Button */}
           <div className="flex items-center justify-center">
-            <button
-              type="submit"
-              className="bg-[#309898] hover:bg-[#00796B] md:mt-20 mt-10 w-full md:py-2 py-1 rounded-md text-white cursor-pointer"
-            >
-              Submit
-            </button>
+            <CreateButton />
           </div>
         </div>
       </Form>

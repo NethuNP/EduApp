@@ -17,7 +17,7 @@ function Register() {
     firstName: string,
     lastName: string,
     contact: string,
-    role: string []
+    role: string[]
   ) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -39,7 +39,6 @@ function Register() {
       role,
       uid: user.uid,
       createdAt: Timestamp.now(),
-      
     });
   };
 

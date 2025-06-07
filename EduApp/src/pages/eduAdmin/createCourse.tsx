@@ -7,6 +7,7 @@ import { useGoogleAuth } from "../../lib/googleApi";
 import { getAuth } from "firebase/auth";
 import { firestore } from "../../lib/userController";
 import { collection, doc, setDoc } from "firebase/firestore";
+import { CreateButton } from "../../components/button";
 
 function CreateCourse() {
   useGoogleAuth();
@@ -191,12 +192,7 @@ function CreateCourse() {
 
             {/* Submit Button */}
             <div className="flex items-center justify-center">
-              <button
-                type="submit"
-                className="bg-[#309898] hover:bg-[#00796B] md:mt-20 mt-10 w-full md:py-2 py-1 rounded-md text-white cursor-pointer"
-              >
-                Create
-              </button>
+              <CreateButton />
             </div>
           </div>
         </Form>

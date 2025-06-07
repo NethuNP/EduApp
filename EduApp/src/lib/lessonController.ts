@@ -1,19 +1,15 @@
-import { collection, doc, getDocs, getFirestore, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  setDoc,
+} from "firebase/firestore";
 import app from "./firebase";
 import type { Lesson } from "../types/types";
+import { getDoc } from "firebase/firestore";
 
-export const firestore = getFirestore(app)
-
-// //lessons collection 
-
-// export const lessonCollection =  collection(firestore, "lessons");
-
-// //add new lesson to the collection
-
-// export const addLesson = async (lesson: Lesson ) => {
-//     const newLesson = await addDoc(lessonCollection, { ...lesson });
-//     console.log(newLesson);
-// };
+export const firestore = getFirestore(app);
 
 // lessons sub collection
 export const addLesson = async (courseId: string, lesson: Lesson) => {
@@ -27,27 +23,21 @@ export const addLesson = async (courseId: string, lesson: Lesson) => {
 };
 
 //get lessons by id
-
-export const getLessonById = async (lessonId: string , courseId:string) => {
-  const lessonRef = collection(firestore , "course" , courseId , "lessons", lessonId);
-  const snapshot = await getDocs(lessonRef);
-  const lessonData = snapshot.docs
-    .map((doc) => ({
-      id: doc.id,
-      ...doc.data() as Lesson,
-    }))
-    .find((lesson: Lesson) => lesson.lessonId === lessonId);
+export const getLessonById = async (lessonId: string, courseId: string) => {
+  const lessonRef = doc(firestore, "course", courseId, "lessons", lessonId);
+  const snapshot = await getDoc(lessonRef);
+  const lessonData = snapshot.data() as Lesson;
   return lessonData;
 };
 
 //get lesson by courseId
 export const getLessonByCourseId = async (courseId: string) => {
-  const lessonRef = collection(firestore, "course" , courseId , "lessons");
+  const lessonRef = collection(firestore, "course", courseId, "lessons");
   const snapshot = await getDocs(lessonRef);
   const lessonData = snapshot.docs
     .map((doc) => ({
       id: doc.id,
-      ...doc.data() as Lesson,
+      ...(doc.data() as Lesson),
     }))
     .filter((lesson: Lesson) => lesson.courseId === courseId);
   return lessonData;

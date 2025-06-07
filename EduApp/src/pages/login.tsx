@@ -39,7 +39,6 @@ function Login() {
           navigate("/eduAdmin/eduDashboard");
         } else if (roles.includes("student")) {
           navigate("/student/stuDashboard");
-        
         } else {
           navigate("/");
         }
@@ -59,7 +58,7 @@ function Login() {
         if (user) {
           toast.success("User logged in successfully");
           console.log("User:", user);
-          navigate("/signup");
+          navigate("/student/home");
         }
       })
       .catch((error) => {

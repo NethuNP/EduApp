@@ -34,6 +34,18 @@ function Dashboard() {
       email: "jane.smith@example.com",
       status: "Pending",
     },
+    {
+      firstName: "Johne",
+      lastName: "Smith",
+      email: "johne.smith@example.com",
+      status: "Pending",
+    },
+    {
+      firstName: "Johne",
+      lastName: "Smith",
+      email: "johne.smith@example.com",
+      status: "Pending",
+    },
   ];
   const stats = [
     { label: "Total Courses", value: courseCount, icon: course },
@@ -67,10 +79,15 @@ function Dashboard() {
         ))}
       </div>
 
-      <div className="w-full  rounded-xl mt-4 md:mt-8">
-        <h2 className="text-[#309898] text-lg md:text-2xl font-semibold mb-4">
-          User Approvals
-        </h2>
+      <div className="w-full  rounded-xl mt-4 md:mt-8 text-[#309898]">
+        <div className="flex justify-between ">
+          <h2 className="text-lg md:text-2xl font-semibold mb-4">
+            User Approvals
+          </h2>
+          <div className="hover:underline cursor-pointer hover:font-semibold">
+            View All
+          </div>
+        </div>
         <div className="space-y-4 text-[#6B7C93]">
           {data.map((user, index) => (
             <div

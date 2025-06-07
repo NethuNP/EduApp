@@ -17,10 +17,16 @@ const AllStudents: React.FC = () => {
             All Students
           </h2>
           <div className=" bg-teal-50 text-gray-500 md:py-2 py-1 justify-between rounded-xl md:flex hidden">
-          <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items-start">Name</div>
-          <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">Contact</div>
-          <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">Email</div>
-        </div>
+            <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items-start">
+              Name
+            </div>
+            <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">
+              Contact
+            </div>
+            <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">
+              Email
+            </div>
+          </div>
           <div className="space-y-4 text-[#6B7C93]">
             {student.map((user, index) => (
               <div
@@ -28,7 +34,7 @@ const AllStudents: React.FC = () => {
                 className="flex flex-wrap md:flex-nowrap justify-between items-center  border-[#D9E2EC] rounded-2xl   border-b  text-xs md:text-base  md:p-4 bg-white"
               >
                 <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items-start">
-                  {user.firstName}{" "}{user.lastName}
+                  {user.firstName} {user.lastName}
                 </div>
                 <div className="w-full lg:w-1/4  md:w-2/3 flex md:items-center md:justify-center justify-start items">
                   {user.contact}
@@ -43,6 +49,6 @@ const AllStudents: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default AllStudents;

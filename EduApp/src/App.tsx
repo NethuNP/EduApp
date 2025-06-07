@@ -4,7 +4,6 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import { ToastContainer } from "react-toastify";
 
-
 import CreateAdmin from "./pages/superAdmin/createAdmin";
 import SuperAdminLayout from "./layouts/superAdminLayout";
 import Dashboard from "./pages/superAdmin/dashboard";
@@ -29,6 +28,9 @@ import LessonContent from "./pages/student/stuLessonContent";
 
 import { ProtectedRoute } from "./components/protectedRoutes";
 import ViewLesson from "./pages/eduAdmin/viewLessons";
+import { Home } from "lucide-react";
+import ViewAssignment from "./pages/eduAdmin/viewAssignment";
+import MyAccount from "./components/myProfile";
 
 function App() {
   
@@ -67,11 +69,19 @@ function App() {
         >
           <Route path="eduDashboard" element={<EduDashboard />} />
           <Route path="myCourses" element={<MyCourses />} />
+          <Route path="myAccount" element ={<MyAccount/>} />
           <Route path="createCourse" element={<CreateCourse />} />
           <Route path="myCourses/:id" element={<ViewCourse />} />
-          <Route path="myCourses/:id/:lessonId" element= {<ViewLesson/>}/>
+          <Route
+            path="myCourses/:id/lessons/:lessonId"
+            element={<ViewLesson />}
+          />
+          <Route path="myCourses/:id/lessons/:lessonId/assignments/:assignmentId" element= {<ViewAssignment/>}/>
           <Route path="myCourses/:id/lessons" element={<CreateLesson />} />
-          <Route path="myCourses/:id/assignments" element={<CreateAssignment />} />
+          <Route
+            path="myCourses/:id/lessons/:lessonId/assignments"
+            element={<CreateAssignment />}
+          />
           <Route path="enrollments" element={<AllStudents />} />
         </Route>
 
@@ -86,8 +96,12 @@ function App() {
         >
           <Route path="stuDashboard" element={<StudentDashboard />} />
           <Route path="stuMycourses" element={<StudentMyCourses />} />
+          <Route path="home" element={<Home />} />
           <Route path="stuMycourses/:courseId" element={<CourseContent />} />
-          <Route path="stuMycourses/:courseId/lessons/:lessonId" element={<StudentLessons />} />
+          <Route
+            path="stuMycourses/:courseId/lessons/:lessonId"
+            element={<StudentLessons />}
+          />
           <Route
             path="stuMycourses/:courseId/lessons/:lessonId/content/:contentId"
             element={<LessonContent />}

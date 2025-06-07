@@ -27,9 +27,9 @@ function CourseContent() {
                     {book.title}
                   </h3>
                 </div>
-                <ChevronRight className="text-teal-500 md:w-6 md:h-6 w-4 h-4"
-                onClick={()=>navigate(`lessons/${book.id}`)}
-                
+                <ChevronRight
+                  className="text-teal-500 md:w-6 md:h-6 w-4 h-4"
+                  onClick={() => navigate(`lessons/${book.id}`)}
                 />
               </div>
               <p className="text-gray-600">{book.description}</p>

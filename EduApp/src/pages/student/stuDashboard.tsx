@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
-import type { Course } from "../../types/types";
+import type { contextType, Course } from "../../types/types";
 import { getAllCourses } from "../../lib/courseController";
+import Aos from "aos";
+import { useOutletContext } from "react-router-dom";
+
 
 function StudentDashboard() {
   const [course, setCourse] = useState<Course[]>([]);
+  const { selectedCategory } = useOutletContext<contextType>();
+
+  useEffect(() => {
+    Aos.init({ duration: 3000 });
+  }, []);
 
   useEffect(() => {
     const fetchCourse = getAllCourses(setCourse);
@@ -29,32 +37,40 @@ function StudentDashboard() {
     setCurrentPage(pageNumber);
   };
 
+  const filteredCourses = course.filter(course => course.category === selectedCategory);
+
   return (
     <div className="md:px-10 ">
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 md:gap-12 gap-6">
-        {currentCourses.map((item) => (
-          <div
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 md:gap-12 gap-4">
+        {filteredCourses.map((item) => (
+          <div 
             key={item.courseId}
-            className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden flex flex-col cursor-pointer hover:transform hover:scale-105 transition-transform duration-300"
+            className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col cursor-pointer hover:transform"
+            data-aos = "fade-in"
           >
-            <div className="flex items-center justify-center bg-gray-50 p-6">
+            <div className="flex items-center justify-center bg-white p-4" >
               <img
-                src={typeof item.coverImage === "string" ? item.coverImage : undefined}
+                src={
+                  typeof item.coverImage === "string"
+                    ? item.coverImage
+                    : undefined
+                }
                 alt={item.title}
-                className="w-32 h-32 object-contain"
+                className="w-32 h-32 md:w-full md:h-40 rounded-md object-contain"
               />
             </div>
-            <div className="p-4 flex-1 flex flex-col justify-between">
+            <div className="p-4 flex-1 flex flex-col justify-between bg-gradient-to-b from-gray-100 to-white rounded-3xl">
               <div>
                 <div className="text-sm md:text-lg lg:text-xl font-semibold text-[#309898]">
                   {item.title}
                 </div>
                 <p className="text-gray-600 text-xs md:text-sm lg:text-lg mt-2">
-                  {item.description}
+                  {item.description?.split(" ").slice(0, 10).join(" ")}
+                  {item.description?.split(" ").length > 10 && "..."}
                 </p>
               </div>
-              <div className="mt-4 flex justify-end">
-                <button className="bg-[#ffeded] text-red-600 hover:bg-red-200 transition-colors rounded-full px-4 py-2 text-sm font-semibold">
+              <div className="flex justify-end">
+                <button className="bg-[#ffeded] text-red-600 hover:bg-red-200 transition-colors rounded-full px-4 py-2 text-sm font-semibold cursor-pointer">
                   Enroll
                 </button>
               </div>

@@ -1,21 +1,40 @@
 import { useNavigate } from "react-router-dom";
 import { getAllAdmins } from "../../lib/userController";
 import type { User } from "../../types/types";
-import { useEffect ,useState } from "react";
+import { useEffect, useState } from "react";
+import { Trash2 } from "lucide-react";
+import { deleteAdmin } from "../../lib/userController";
 
 function AllAdmins() {
+  const navigate = useNavigate();
   const [admins, setAdmins] = useState<User[]>([]);
 
   useEffect(() => {
-    const fetchAdmins = getAllAdmins(setAdmins);
-    return () => {
-      if (fetchAdmins) {
-        fetchAdmins();
+    const fetchAdmins = async () => {
+      try {
+        const data = await getAllAdmins(setAdmins);
+        console.log(data);
+      } catch (error) {
+        console.error("Failed to fetch admins:", error);
       }
     };
+    fetchAdmins();
   }, []);
 
-  const navigate = useNavigate();
+  const handleDelete = async (id: string) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this admin?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await deleteAdmin(id);
+      setAdmins((prevAdmins) => prevAdmins.filter((admin) => admin.uid !== id));
+    } catch (error) {
+      console.error("Failed to delete admin:", error);
+    }
+  };
+
   return (
     <div>
       <div className="w-full bg-white rounded-lg lg:p-10 p-4">
@@ -41,12 +60,15 @@ function AllAdmins() {
             <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">
               Email
             </div>
+            <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items">
+              Action
+            </div>
           </div>
           <div className="space-y-4 text-[#6B7C93]">
             {admins.map((user, index) => (
               <div
                 key={index}
-                className="flex flex-wrap md:flex-nowrap justify-between items-center  border-[#D9E2EC] rounded-2xl   border-b  text-xs md:text-base p-4 md:p-4 bg-white"
+                className="flex flex-wrap md:flex-nowrap justify-start items-center  border-[#D9E2EC] rounded-2xl   border-b  text-xs md:text-base p-4 md:p-4 bg-white"
               >
                 <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items-start">
                   {user.firstName} {user.lastName}
@@ -56,6 +78,12 @@ function AllAdmins() {
                 </div>
                 <div className="w-full lg:w-1/4  md:w-2/3 flex md:items-center md:justify-center justify-start items">
                   {user.email}
+                </div>
+                <div className="w-full lg:w-1/4  md:w-2/3 flex md:items-center md:justify-center justify-start items">
+                  <Trash2
+                    className="text-red-700"
+                    onClick={() => handleDelete(user.uid)}
+                  />
                 </div>
               </div>
             ))}
@@ -67,4 +95,3 @@ function AllAdmins() {
 }
 
 export default AllAdmins;
-

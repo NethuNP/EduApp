@@ -13,7 +13,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const location = useLocation();
 
   useEffect(() => {
-    const timer = setTimeout(() => setDelayLoading(false), 500); 
+    const timer = setTimeout(() => setDelayLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
 

@@ -29,7 +29,7 @@ function EduDashboard() {
             {data.map((user, index) => (
               <div
                 key={index}
-                className="flex flex-wrap md:flex-nowrap justify-between items-center  border-[#D9E2EC] rounded-2xl  border-b pb-2 text-xs md:text-base  bg-white md:gap-4"
+                className="flex flex-wrap md:flex-nowrap justify-between items-center  border-[#D9E2EC] rounded-2xl  border-b pb-2 text-xs md:text-base  bg-white md:gap-4 md:py-2"
               >
                 <div className="w-full lg:w-1/4  md:w-2/3 font-medium flex md:items-center md:justify-center justify-start items-start">
                   {user.firstName}
@@ -48,10 +48,10 @@ function EduDashboard() {
                 </div>
                 <div className="w-full lg:w-1/4  md:w-2/3 flex items-end justify-end md:items-center md:justify-center md:space-x-4 space-x-2">
                   <button>
-                    <UserRoundPlus className="cursor-pointer md:w-6 md:h-6 w-4 h-4 text-[#309898] transition duration-300  hover:scale-120"/>
+                    <UserRoundPlus className="cursor-pointer md:w-6 md:h-6 w-4 h-4 text-[#309898] transition duration-300  hover:scale-120" />
                   </button>
                   <button>
-                    <UserRoundX className="cursor-pointer md:w-6 md:h-6 w-4 h-4 text-red-700 transition duration-300  hover:scale-120"/>
+                    <UserRoundX className="cursor-pointer md:w-6 md:h-6 w-4 h-4 text-red-700 transition duration-300  hover:scale-120" />
                   </button>
                 </div>
               </div>

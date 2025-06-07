@@ -1,7 +1,10 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { createLessonValidationSchema } from "../../validations/createLessonValidation";
 import upload from "../../assets/icons/upload.png";
-import { uploadFileToCloudinary , uploadVideoToCloudinary} from "../../lib/cloudinary";
+import {
+  uploadFileToCloudinary,
+  uploadVideoToCloudinary,
+} from "../../lib/cloudinary";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { firestore } from "../../lib/userController";
 import { toast } from "react-toastify";
@@ -13,8 +16,6 @@ function CreateLesson() {
   const auth = getAuth();
   const courseId = useParams().id;
 
-
-
   return (
     <Formik
       initialValues={{
@@ -24,9 +25,6 @@ function CreateLesson() {
         lessonTutorials: null,
         lessonStartDate: "",
         lessonEndDate: "",
-        courseId:courseId
-        
-
       }}
       validationSchema={createLessonValidationSchema}
       onSubmit={async (values, { resetForm }) => {
@@ -41,24 +39,26 @@ function CreateLesson() {
           );
           const lessonTutorialUrl = await uploadVideoToCloudinary(
             values.lessonTutorials
-          )
-           if (!courseId) {
-             toast.error("Invalid course ID");
-             return;
-           }
-           const docRef = doc(collection(firestore, "course", courseId, "lessons"));
-           const lessonId = docRef.id
+          );
+          if (!courseId) {
+            toast.error("Invalid course ID");
+            return;
+          }
+          const docRef = doc(
+            collection(firestore, "course", courseId, "lessons")
+          );
+          const lessonId = docRef.id;
 
           const newLesson = {
             lessonId,
+            courseId,
             ...values,
             lessonMaterials: lessonMetirialUrl,
             lessonTutorials: lessonTutorialUrl,
             createdBy: auth.currentUser?.uid ?? "",
-            courseId: values.courseId ?? "",
           };
 
-          await setDoc(docRef, newLesson)
+          await setDoc(docRef, newLesson);
           toast.success("Lesson added successfully");
           navigate("/eduAdmin/myCourses");
           resetForm();
