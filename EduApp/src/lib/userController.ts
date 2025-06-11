@@ -64,7 +64,7 @@ export const getCurrentUserDetails = async (userId: string ) => {
   const usersRef = collection(firestore, "users");
   const snapshot = await getDocs(usersRef);
   const matchedUser = snapshot.docs
-    .map((doc) => ({ uid: doc.id, ...doc.data() }))
+    .map((doc) => ({ uid: doc.id, ...doc.data()}))
     .find((user: any) => user.uid === userId);
 
   return matchedUser;

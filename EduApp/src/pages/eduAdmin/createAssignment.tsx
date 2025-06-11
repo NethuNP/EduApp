@@ -153,16 +153,17 @@ function CreateAssignment() {
                   as="textarea"
                   id="assignmentDescription"
                   name="assignmentDescription"
-                  className="w-full rounded-md md:p-2 p-1 border border-[#D9E2EC] bg-white focus:ring-1 focus:ring-[#85c2c2] focus:outline-none text-[12px] md:text-[16px]"
+                  className="w-full h-full rounded-md md:p-2 p-1 border border-[#D9E2EC] bg-white focus:ring-1 focus:ring-[#85c2c2] focus:outline-none text-[12px] md:text-[16px]"
                 />
                 <div className="absolute bottom-[-18px] right-0 text-red-600 font-semibold md:text-[12px] text-[10px]">
                   <ErrorMessage name="assignmentDescription" />
+                </div>
                 </div>
 
                 <div className="flex flex-col gap-1  relative ">
                   <label
                     htmlFor="assignmentMaterials"
-                    className="text-[#6B7C93] text-sm md:text-lg mt-4"
+                    className="text-[#6B7C93] text-sm md:text-lg "
                   >
                     Materials
                   </label>
@@ -193,7 +194,7 @@ function CreateAssignment() {
                   </div>
                 </div>
               </div>
-            </div>
+            
 
             <div className="flex items-center justify-center">
               <CreateButton />

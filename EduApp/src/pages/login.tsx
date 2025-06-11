@@ -58,7 +58,7 @@ function Login() {
         if (user) {
           toast.success("User logged in successfully");
           console.log("User:", user);
-          navigate("/student/home");
+          navigate("/signup");
         }
       })
       .catch((error) => {

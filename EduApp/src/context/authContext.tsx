@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               confirmPassword: data.confirmPassword ?? "",
               role: data.role ?? "",
               
-            };
+            }; 
             setCurrentUser(completeUser);
             const roleData = data.role;
             const rolesArray = Array.isArray(roleData) ? roleData : [roleData];

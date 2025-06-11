@@ -1,54 +1,55 @@
 import { useEffect, useState } from "react";
-import type { contextType, Course } from "../../types/types";
+import type { Course } from "../../types/types";
 import { getAllCourses } from "../../lib/courseController";
 import Aos from "aos";
-import { useOutletContext } from "react-router-dom";
-
+import Category from "../../components/category";
 
 function StudentDashboard() {
-  const [course, setCourse] = useState<Course[]>([]);
-  const { selectedCategory } = useOutletContext<contextType>();
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("Certificate");
 
   useEffect(() => {
     Aos.init({ duration: 3000 });
   }, []);
 
   useEffect(() => {
-    const fetchCourse = getAllCourses(setCourse);
-    return () => {
-      if (fetchCourse) {
-        fetchCourse();
-      }
-    };
+    getAllCourses(setCourses);
   }, []);
 
-  // Pagination state
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  // Calculate pagination
-  const totalPages = Math.ceil(course.length / itemsPerPage);
+  const filteredCourses = courses.filter(
+    (courses) => courses.category === selectedCategory
+  );
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentCourses = course.slice(startIndex, startIndex + itemsPerPage);
+  const currentCourses = filteredCourses.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
-  // Handle page change
   const goToPage = (pageNumber: number) => {
     if (pageNumber < 1 || pageNumber > totalPages) return;
     setCurrentPage(pageNumber);
   };
 
-  const filteredCourses = course.filter(course => course.category === selectedCategory);
-
   return (
-    <div className="md:px-10 ">
+    <div className="md:px-10">
+      <Category
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+      />
+
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 md:gap-12 gap-4">
-        {filteredCourses.map((item) => (
-          <div 
+        {currentCourses.map((item) => (
+          <div
             key={item.courseId}
-            className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col cursor-pointer hover:transform"
-            data-aos = "fade-in"
+            className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col cursor-pointer"
+            data-aos="fade-in"
           >
-            <div className="flex items-center justify-center bg-white p-4" >
+            <div className="flex items-center justify-center bg-white p-4">
               <img
                 src={
                   typeof item.coverImage === "string"
@@ -93,7 +94,6 @@ function StudentDashboard() {
           Prev
         </button>
 
-        {/* Page numbers */}
         {[...Array(totalPages)].map((_, i) => {
           const pageNum = i + 1;
           return (

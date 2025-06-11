@@ -4,6 +4,8 @@ import { getCourseByCreatedBy } from "../../lib/courseController";
 import type { Course } from "../../types/types";
 import { getAuth } from "firebase/auth";
 import { Trash2, SquarePen } from "lucide-react";
+import Loader from "../../components/loader";
+import Loading from "../../components/loader";
 
 const MyCourses: React.FC = () => {
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ const MyCourses: React.FC = () => {
         {courses.length === 0 ? (
           <div className="flex justify-center items-center h-40">
             <p className="text-[#309898] text-xl font-semibold">
-              No Courses Found
+              <Loader/>
             </p>
           </div>
         ) : (

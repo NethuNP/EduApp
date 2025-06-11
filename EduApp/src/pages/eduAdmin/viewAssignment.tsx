@@ -62,7 +62,7 @@ function ViewAssignment() {
                 <div className="md:text-sm text-xs">
                   Download your assignments here{" "}
                 </div>
-                <div>
+                <div className="cursor-pointer">
                   {" "}
                   <Download />
                 </div>

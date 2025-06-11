@@ -9,7 +9,7 @@ export const createCourseValidationSchema = Yup.object({
   description: Yup.string()
     .required("Description is required")
     .min(10, "Description must be at least 10 characters long")
-    .max(1000, "Description must be at most 500 characters long"),
+    .max(1000, "Description must be at most 1000 characters long"),
   startDate: Yup.date().required("Start Date is required"),
   endDate: Yup.date()
     .required("End date is required")

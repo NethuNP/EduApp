@@ -1,49 +1,56 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import type { contextType, Course } from "../../types/types";
+import type { Course } from "../../types/types";
 import { getAllCourses } from "../../lib/courseController";
-import { useOutletContext } from "react-router-dom";
+import Category from "../../components/category";
+import Aos from "aos";
 
 function StudentMyCourses() {
   const navigate = useNavigate();
-  const [course, setCourse] = useState<Course[]>([]);
-  const { selectedCategory } = useOutletContext<contextType>();
+  const [courses, setCourses] = useState<Course[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const [selectedCategory, setSelectedCategory] = useState("Certificate");
+
+  const itemsPerPage = 8;
 
   useEffect(() => {
-    const fetchCourse = getAllCourses(setCourse);
-    return () => {
-      if (fetchCourse) {
-        fetchCourse();
-      }
-    };
+    getAllCourses(setCourses);
   }, []);
 
-  // Calculate pagination
-  const totalPages = Math.ceil(course.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentCourses = course.slice(startIndex, startIndex + itemsPerPage);
+  useEffect(() => {
+    Aos.init({ duration: 3000 });
+  }, []);
 
-  // Handle page change
+  // Filter courses based on selected category
+  const filteredCourses = courses.filter(
+    (course) => course.category === selectedCategory
+  );
+
+  // Pagination calculation based on filtered courses
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentCourses = filteredCourses.slice(startIndex, startIndex + itemsPerPage);
+
   const goToPage = (pageNumber: number) => {
     if (pageNumber < 1 || pageNumber > totalPages) return;
     setCurrentPage(pageNumber);
   };
 
-  const filteredCourses = course.filter(
-    (course) => course.category === selectedCategory
-  );
-
   return (
-    <div className="md:px-10  ">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 ">
-        {filteredCourses.map((item) => (
+    <div className="md:px-10">
+      <Category selectedCategory={selectedCategory} onSelectCategory={(category) => {
+        setSelectedCategory(category);
+        setCurrentPage(1);
+      }} />
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {currentCourses.map((item) => (
           <div
             key={item.courseId}
             className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col"
+            data-aos="fade-in"
           >
-            <div className="flex items-center justify-center  p-6">
+            <div className="flex items-center justify-center p-6">
               <img
                 src={item.coverImage}
                 alt={item.title}
@@ -63,9 +70,7 @@ function StudentMyCourses() {
               <div className="flex justify-end">
                 <button
                   className="bg-teal-100 text-teal-600 hover:bg-green-200 cursor-pointer transition-colors rounded-full px-4 py-2 text-sm font-semibold"
-                  onClick={() =>
-                    navigate(`/student/stuMycourses/${item.courseId}`)
-                  }
+                  onClick={() => navigate(`/student/stuMycourses/${item.courseId}`)}
                 >
                   Browse
                 </button>
@@ -74,6 +79,7 @@ function StudentMyCourses() {
           </div>
         ))}
       </div>
+
       {/* Pagination Controls */}
       <div className="flex justify-center items-center mt-8 space-x-2">
         <button
@@ -88,7 +94,6 @@ function StudentMyCourses() {
           Prev
         </button>
 
-        {/* Page numbers */}
         {[...Array(totalPages)].map((_, i) => {
           const pageNum = i + 1;
           return (
